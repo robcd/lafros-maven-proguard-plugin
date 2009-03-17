@@ -97,9 +97,11 @@ public class LiberatorMojo extends AbstractMojo {
    * @parameter expression="(!scala/swing/test/**, scala/**)"*/
   private String filter;
   /**
-   * fully-qualified name of class to be run as an application.
+   * fully-qualified names of declared 'main' or applet classes - those containing
+   * a <tt>public static void main</tt> or extending java.applet.Applet,
+   * respectively.
    * @parameter */
-  private String mainClass;
+  private String[] entryPoints;
   /**
    * corresponds to ProGuard's -dontnote option.
    * @parameter expression=false */
@@ -241,7 +243,7 @@ public class LiberatorMojo extends AbstractMojo {
   }
 
   private String[] createParserArgs(final Set<File> liberateFrLibs,
-                                    final Set<File> otherDeps) {
+                                    final Set<File> otherDeps) throws MojoExecutionException {
     final List<String> list = new ArrayList(20);
     //
     list.add("-basedirectory "+ project.getBasedir().getPath() + File.separator +"target");
@@ -264,9 +266,12 @@ public class LiberatorMojo extends AbstractMojo {
       list.add("-libraryjars "+ libraryJar);
     }
     //
-    if (mainClass != null)
-      list.add("-keep public class "+ mainClass +" {*;}");
-    list.add("-keep public class com.lafros.gui.app.Applet {*;}");
+    if (entryPoints == null || entryPoints.length == 0)
+      throw new MojoExecutionException("Please supply entryPoints.");
+    for (String entryPoint: entryPoints) { 
+      list.add("-keep public class "+ entryPoint +" {*;}");
+    }
+    //
     list.add("-ignorewarnings");
     //
     // let's assume the following are best contemplated after jar:jar has been executed
