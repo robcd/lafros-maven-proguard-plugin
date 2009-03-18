@@ -82,7 +82,7 @@ $ export MAVEN_OPTS=-Xmx256m; mvn ...
 
   The dependencies being liberated from should be specified using the
   {{{liberate-mojo.html#liberateFromDepsWhoseArtsStartWith}liberateFromDepsWhoseArtsStartWith}}
-  and {{{liberate-mojo.html#libraryJars}libraryJars}} elements, although <<the
+  and {{{liberate-mojo.html#filter}filter}} elements, although <<the
   default values should be sufficient if liberating from the Scala library (and
   Scala Swing) jars>>:
 
