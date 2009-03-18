@@ -5,7 +5,45 @@
   <artifactId>maven-proguard-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <version>1.0</version>
-  <name>Latterfrosken Maven Proguard Plugin</name>
+  <name>Latterfrosken Maven Proguard Plug-in</name>
+  <description>plug-in having goal that uses ProGuard to 'liberate' jars from specified dependencies</description>
+  <url>http://code.google.com/p/lafros-maven-proguard-plugin</url>
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/lafros-maven-proguard-plugin/issues/list</url>
+  </issueManagement>    
+  <inceptionYear>2009</inceptionYear>
+  <licenses>
+    <license>
+      <name>The GNU General Public License, Version 3</name>
+      <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:http://lafros-maven-proguard-plugin.googlecode.com/svn/trunk/</connection>
+    <developerConnection>scm:svn:https://lafros-maven-proguard-plugin.googlecode.com/svn/trunk/</developerConnection>
+    <url>http://code.google.com/p/lafros-maven-proguard-plugin/source/browse/</url>
+  </scm>
+  <organization>
+    <name>Latterfrosken Software Development Limited</name>
+    <url>http://lafros.com/</url>
+  </organization> 
+  <developers>
+    <developer>
+      <id>arctic.bob</id>
+      <name>Rob Dickens</name>
+      <email>rob.dickens at lafros.com</email>
+      <url/>
+      <organization>Latterfrosken Software Development Limited</organization>
+      <organizationUrl>http://lafros.com/</organizationUrl>
+      <roles>
+        <role>owner</role>
+      </roles>
+      <timezone>0</timezone>
+      <properties/>
+    </developer>
+  </developers>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -41,4 +79,12 @@
       </plugin>
     </plugins>
   </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

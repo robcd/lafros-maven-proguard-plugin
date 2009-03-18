@@ -11,7 +11,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of 
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
  * GNU Lesser General Public License for more details. 
- * You should have received a copy of the GNU Lesser General Public License 
+ * You should have received a copy of the GNU General Public License 
  * along with the plug-in.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.lafros.maven.plugins.proguard;
@@ -43,8 +43,8 @@ import proguard.KeepSpecification;
 import proguard.ParseException;
 import proguard.ProGuard;
 /**
- * @description 'liberates' the project's jar artifact, in advance of its creation,
- * from specified library dependencies which are typically large and only sparsely
+ * 'liberates' the project's jar artifact, in advance of its creation, from
+ * specified library dependencies which are typically large and only sparsely
  * populated with classes which are actually required. This is achieved by copying
  * those classes to the output directory, where they will be added to the artifact
  * by the jar plug-in in the usual way. Other dependencies which also depend on the
@@ -75,20 +75,20 @@ public class LiberatorMojo extends AbstractMojo {
   private Set<Artifact> dependencies;
   /**
    * corresponds to ProGuard's -libraryjars. If left unset (null),
-   * "<java.home>/lib/rt.jar" will be used. On Macintoshes, you will need to supply
-   * a <param> with value "&lt;java.home&gt;/../Classes/classes.jar".
+   * "&lt;java.home&gt;/lib/rt.jar" will be used. On Macintoshes, you will need to supply
+   * a &lt;param&gt; with value "&lt;java.home&gt;/../Classes/classes.jar".
    * @parameter */
   private String[] libraryJars;
   /**
    * required classes (see above) from dependency artifacts starting with any of
    * these Strings will be copied to the output directory. If left unset (null),
    * "scala-library-" and "scala-swing-" will be assumed.
-   * @parameter */
+   * @parameter
+   * @required */
   private String[] liberateFromDepsWhoseArtsStartWith;
   /**
-   * other dependency artifacts which depend on those to be liberated from - any classes
-   * they require from the libraries specified above will also be copied to the
-   * output directory.
+   * other dependency artifacts which depend on those to be liberated from - any
+   * classes they require will also be copied to the output directory.
    * @parameter */
   private String[] alsoSupportDepsWhoseArtsStartWith;
   /**

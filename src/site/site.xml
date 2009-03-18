@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+  <!--bannerLeft> 
+    <name>Sonatype</name> 
+    <src>images/logo.png</src> 
+    <href>http://www.sonatype.com</href> 
+  </bannerLeft--> 
+  <body> 
+    <menu name="Project Documentation"> 
+      <item name="Home" href="index.html"/> 
+      <item name="Plug-in Goals" href="plugin-info.html"/> 
+      <item name="Issue Tracking" href="issue-tracking.html"/> 
+      <item name="People" href="team-list.html"/> 
+      <item name="Dependencies" href="dependencies.html"/> 
+      <item name="Licence: GPLv3" href="http://www.gnu.org/licenses/gpl-3.0.html"/> 
+    </menu> 
+    <!--menu ref="reports"/--> 
+  </body> 
+</project> 
