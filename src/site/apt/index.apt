@@ -40,6 +40,13 @@ Home
   Usage § of {{{plugin-info.html#usage} Plug-in Goals}}) in all cases, as shown in
   the first of the examples which follow.
 
+  Finally, it is likely you will need to have Maven invoke the Java runtime with a
+  larger maximum memory-allocation pool:
+
++---
+$ export MAVEN_OPTS=-Xmx256m; mvn ...
++---
+
 * Plug-in configuration examples
 
   It is always necessary to specify one or more
