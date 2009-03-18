@@ -85,6 +85,11 @@
       <name>Latterfrosken Repository</name>
       <url>scp://lafros.com/www/lafros.com/m2arts</url>
     </repository>
+    <site>
+      <id>lafros.com</id>
+      <name>Latterfrosken Website</name>
+      <url>scp://lafros.com/www/lafros.com/maven/plugins/proguard</url>
+    </site>
   </distributionManagement>
   <reporting>
     <plugins>
