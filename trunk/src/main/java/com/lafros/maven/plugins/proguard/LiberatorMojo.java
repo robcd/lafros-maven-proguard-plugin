@@ -101,7 +101,8 @@ public class LiberatorMojo extends AbstractMojo {
    * fully-qualified names of declared 'main' or applet classes - those containing
    * a <tt>public static void main</tt> or extending <tt>java.applet.Applet</tt>,
    * respectively.
-   * @parameter */
+   * @parameter
+   * @required */
   private String[] entryPoints;
   /**
    * corresponds to ProGuard's <tt>-dontnote</tt> option.
