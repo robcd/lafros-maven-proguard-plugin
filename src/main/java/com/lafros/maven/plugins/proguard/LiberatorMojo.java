@@ -43,13 +43,15 @@ import proguard.KeepSpecification;
 import proguard.ParseException;
 import proguard.ProGuard;
 /**
- * 'liberates' the project's jar artifact, in advance of its creation, from
- * specified library dependencies which are typically large and only sparsely
- * populated with classes which are actually required. This is achieved by copying
- * those classes to the output directory, where they will be added to the artifact
- * by the jar plug-in in the usual way. Other dependencies which also depend on the
- * above ones may also be specified, so that the classes which they themselves
+ * for projects of packaging type, <b><tt>liberated-jar</tt></b>, this goal
+ * 'liberates' the jar artifact, in advance of its creation, from specified library
+ * dependencies which are typically large and only sparsely populated with the
+ * classes which are actually required. This is achieved by copying those classes
+ * to the output directory, where they will be added to the artifact by the
+ * standard jar plug-in in the usual way. Other dependencies which also depend on
+ * the above ones may also be specified, so that the classes which they themselves
  * require will also be copied to the output directory.
+ *
  * @phase package
  * @goal liberate
  */
@@ -74,17 +76,16 @@ public class LiberatorMojo extends AbstractMojo {
    * @readonly */
   private Set<Artifact> dependencies;
   /**
-   * corresponds to ProGuard's -libraryjars. If left unset (null),
-   * "&lt;java.home&gt;/lib/rt.jar" will be used. On Macintoshes, you will need to supply
-   * a &lt;param&gt; with value "&lt;java.home&gt;/../Classes/classes.jar".
+   * corresponds to ProGuard's <tt>-libraryjars</tt>. If not set,
+   * <tt>"&lt;java.home&gt;/lib/rt.jar"</tt> will be used. On Mac OS X, you will need to supply
+   * a <tt>&lt;param&gt;</tt> with value <tt>"&lt;java.home&gt;/../Classes/classes.jar"</tt>.
    * @parameter */
   private String[] libraryJars;
   /**
    * required classes (see above) from dependency artifacts starting with any of
-   * these Strings will be copied to the output directory. If left unset (null),
-   * "scala-library-" and "scala-swing-" will be assumed.
-   * @parameter
-   * @required */
+   * these Strings will be copied to the output directory. If not set,
+   * <tt>"scala-library-"</tt> and <tt>"scala-swing-"</tt> will be assumed.
+   * @parameter */
   private String[] liberateFromDepsWhoseArtsStartWith;
   /**
    * other dependency artifacts which depend on those to be liberated from - any
@@ -92,26 +93,26 @@ public class LiberatorMojo extends AbstractMojo {
    * @parameter */
   private String[] alsoSupportDepsWhoseArtsStartWith;
   /**
-   * ProGuard filter, to be applied when copying classes from the dependencies the
-   * project's artifact is being liberated from. 
+   * ProGuard filter, to be applied when copying classes from the dependencies
+   * being liberated from.
    * @parameter expression="(!scala/swing/test/**, scala/**)"*/
   private String filter;
   /**
    * fully-qualified names of declared 'main' or applet classes - those containing
-   * a <tt>public static void main</tt> or extending java.applet.Applet,
+   * a <tt>public static void main</tt> or extending <tt>java.applet.Applet</tt>,
    * respectively.
    * @parameter */
   private String[] entryPoints;
   /**
-   * corresponds to ProGuard's -dontnote option.
+   * corresponds to ProGuard's <tt>-dontnote</tt> option.
    * @parameter expression=false */
   private boolean suppressNotes;
   /**
-   * corresponds to ProGuard's -dontwarn option.
+   * corresponds to ProGuard's <tt>-dontwarn</tt> option.
    * @parameter expression=false */
   private boolean suppressWarnings;
   /**
-   * corresponds to ProGuard's -verbose option.
+   * corresponds to ProGuard's <tt>-verbose</tt> option.
    * @parameter expression=false */
   private boolean verbose;
   /**

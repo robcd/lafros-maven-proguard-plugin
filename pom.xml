@@ -84,6 +84,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
+        <configuration>
+          <extractors>
+            <extractor>java</extractor>
+          </extractors>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>
