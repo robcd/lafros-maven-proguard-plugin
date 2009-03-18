@@ -8,4 +8,97 @@
 
 Home
 
- Check-out the {{{plugin-info.html}Plug-in Goals}} to get started.
+* Introduction
+
+  This plug-in currently has only one goal, namely to {{{liberate-mojo.html} proguard:liberate}} a jar from certain of its dependencies.
+
+  So that Maven can find it, add the following to your project's <<<pom.xml>>>:
+
++---
+<project>
+  ...
+  <pluginRepositories>
+    <pluginRepository>
+      <id>lafros.com</id>
+      <url>http://lafros.com/m2arts</url>
+    </pluginRepository>
+  </pluginRepositories>
++---
+
+  (This normally comes after any <<<repositories>>> element, and before any
+  <<<dependencies>>> one.)
+
+  The project's packaging type must be set as follows:
+
++---
+<project>
+  ...
+  <packaging>liberated-jar</packaging>
++---
+
+  A <<<configuration>>> element must be added beneath the usual <<<plugin>>> one (see
+  Usage § of {{{plugin-info.html#usage} Plug-in Goals}}) in all cases, as shown in
+  the first of the examples which follow.
+
+* Plug-in configuration examples
+
+  It is always necessary to specify one or more
+  {{{liberate-mojo.html#entryPoints}entryPoints}}, as in the following example:
+
++---
+      <plugin>
+        <groupId>com.lafros.maven.plugins.proguard</groupId>
+        <artifactId>maven-proguard-plugin</artifactId>
+        <configuration>
+          <entryPoints>
+            <param>com.lafros.gui.demo.alerts.app</param>
+            <param>com.lafros.gui.app.Applet</param>
+          </entryPoints>
+          ...
+        </configuration>
+      </plugin>
++---
+
+  The location of the jar containing the java runtime itself must be specified
+  (using the {{{liberate-mojo.html#libraryJars}libraryJars}} element) if,
+  as on Mac OS X, it is not in the standard location
+  (<<<<java.home>/lib/rt.jar>>>):
+
++---
+        <configuration>
+          ...
+          <libraryJars>
+            <param>&lt;java.home&gt;/../Classes/classes.jar</param>
+          </libraryJars>
+        </configuration>
++---
+
+  The dependencies being liberated from should be specified using the
+  {{{liberate-mojo.html#liberateFromDepsWhoseArtsStartWith}liberateFromDepsWhoseArtsStartWith}}
+  and {{{liberate-mojo.html#libraryJars}libraryJars}} elements, although <<the
+  default values should be sufficient if liberating from the Scala library (and
+  Scala Swing) jars>>:
+
++---
+        <configuration>
+          ...
+          <liberateFromDepsWhoseArtsStartWith>
+            <param>some-large-lib-</param>
+          </liberateFromDepsWhoseArtsStartWith>
+          <filter>"(!notInterestedIn/**, interestedIn/**)"</filter>
+        </configuration>
++---
+
+  Any other dependencies which depend on those being liberated from should also be
+  specified (using the
+  {{{liberate-mojo.html#alsoSupportDepsWhoseArtsStartWith}alsoSupportDepsWhoseArtsStartWith}}
+  element):
+
++---
+        <configuration>
+          ...
+          <alsoSupportDepsWhoseArtsStartWith>
+            <param>lafros-gui-</param>
+          </alsoSupportDepsWhoseArtsStartWith>
+        </configuration>
++---

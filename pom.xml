@@ -79,6 +79,13 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>lafros.com</id>
+      <name>Latterfrosken Repository</name>
+      <url>scp://lafros.com/www/lafros.com/m2arts</url>
+    </repository>
+  </distributionManagement>
   <reporting>
     <plugins>
       <plugin>
