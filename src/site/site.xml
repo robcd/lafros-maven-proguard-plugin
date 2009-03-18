@@ -12,9 +12,10 @@
       <item name="Home" href="index.html"/> 
       <item name="Plug-in Goals" href="plugin-info.html"/> 
       <item name="Issue Tracking" href="issue-tracking.html"/> 
-      <item name="People" href="team-list.html"/> 
+      <item name="Source Repository" href="source-repository.html"/> 
       <item name="Dependencies" href="dependencies.html"/> 
       <item name="Licence: GPLv3" href="http://www.gnu.org/licenses/gpl-3.0.html"/> 
+      <item name="People" href="team-list.html"/> 
     </menu> 
   </body> 
 </project> 
