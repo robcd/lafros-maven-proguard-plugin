@@ -28,12 +28,27 @@ Home
   (This normally comes after any <<<repositories>>> element, and before any
   <<<dependencies>>> one.)
 
-  The project's packaging type must be set as follows:
+  The project's packaging type, and the scope of the dependencies to be liberated
+  from, should be set as in the following example:
 
 +---
 <project>
   ...
   <packaging>liberated-jar</packaging>
+  ...
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-swing</artifactId>
+      <version>${scala.version}</version>
+      <scope>provided</scope>
+    </dependency>
 +---
 
   A <<<configuration>>> element must be added beneath the usual <<<plugin>>> one (see
