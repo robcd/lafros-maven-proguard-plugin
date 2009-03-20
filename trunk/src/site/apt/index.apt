@@ -107,7 +107,7 @@ $ export MAVEN_OPTS=-Xmx256m; mvn ...
           <liberateFromDepsWhoseArtsStartWith>
             <param>some-large-lib-</param>
           </liberateFromDepsWhoseArtsStartWith>
-          <filter>"(!notInterestedIn/**, interestedIn/**)"</filter>
+          <filter>(!notInterestedIn/**, interestedIn/**)</filter>
         </configuration>
 +---
 
