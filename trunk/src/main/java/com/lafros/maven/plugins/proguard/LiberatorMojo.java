@@ -78,9 +78,10 @@ public class LiberatorMojo extends AbstractMojo {
   /**
    * corresponds to ProGuard's <a
    * href="http://proguard.sourceforge.net/manual/usage.html#iooptions"><tt>-libraryjars</tt></a>
-   * option. If not set, <tt>"&lt;java.home&gt;/lib/rt.jar"</tt> will be used. On
-   * Mac OS X, you will need to supply a <tt>&lt;param&gt;</tt> with value
-   * <tt>"&lt;java.home&gt;/../Classes/classes.jar"</tt>.
+   * option. If not set, <tt>"&lt;java.home&gt;/lib/rt.jar"</tt> will be
+   * assumed. On Mac OS X, this should be
+   * <tt>"&lt;java.home&gt;/../Classes/classes.jar"</tt>, which must be specified
+   * as <tt>&lt;param&gt;&amp;lt;java.home&amp;gt;/../Classes/classes.jar&lt;/param&gt;</tt>.
    * @parameter */
   private String[] libraryJars;
   /**
