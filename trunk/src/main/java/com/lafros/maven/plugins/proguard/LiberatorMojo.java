@@ -76,9 +76,11 @@ public class LiberatorMojo extends AbstractMojo {
    * @readonly */
   private Set<Artifact> dependencies;
   /**
-   * corresponds to ProGuard's <tt>-libraryjars</tt>. If not set,
-   * <tt>"&lt;java.home&gt;/lib/rt.jar"</tt> will be used. On Mac OS X, you will need to supply
-   * a <tt>&lt;param&gt;</tt> with value <tt>"&lt;java.home&gt;/../Classes/classes.jar"</tt>.
+   * corresponds to ProGuard's <a
+   * href="http://proguard.sourceforge.net/manual/usage.html#iooptions"><tt>-libraryjars</tt></a>
+   * option. If not set, <tt>"&lt;java.home&gt;/lib/rt.jar"</tt> will be used. On
+   * Mac OS X, you will need to supply a <tt>&lt;param&gt;</tt> with value
+   * <tt>"&lt;java.home&gt;/../Classes/classes.jar"</tt>.
    * @parameter */
   private String[] libraryJars;
   /**
@@ -93,7 +95,9 @@ public class LiberatorMojo extends AbstractMojo {
    * @parameter */
   private String[] alsoSupportDepsWhoseArtsStartWith;
   /**
-   * ProGuard filter, to be applied when copying classes from the dependencies
+   * ProGuard <a
+   * href="http://proguard.sourceforge.net/manual/usage.html#filters">filter</a>, to
+   * be applied when copying classes from the dependencies
    * being liberated from.
    * @parameter expression="(!scala/swing/test/**, scala/**)"*/
   private String filter;
@@ -105,15 +109,21 @@ public class LiberatorMojo extends AbstractMojo {
    * @required */
   private String[] entryPoints;
   /**
-   * corresponds to ProGuard's <tt>-dontnote</tt> option.
+   * corresponds to ProGuard's <a
+   * href="http://proguard.sourceforge.net/manual/usage.html#generaloptions"><tt>-dontnote</tt></a>
+   * option.
    * @parameter expression=false */
   private boolean suppressNotes;
   /**
-   * corresponds to ProGuard's <tt>-dontwarn</tt> option.
+   * corresponds to ProGuard's <a
+   * href="http://proguard.sourceforge.net/manual/usage.html#generaloptions"><tt>-dontwarn</tt></a>
+   * option.
    * @parameter expression=false */
   private boolean suppressWarnings;
   /**
-   * corresponds to ProGuard's <tt>-verbose</tt> option.
+   * corresponds to ProGuard's <a
+   * href="http://proguard.sourceforge.net/manual/usage.html#generaloptions"><tt>-verbose</tt></a>
+   * option.
    * @parameter expression=false */
   private boolean verbose;
   /**
