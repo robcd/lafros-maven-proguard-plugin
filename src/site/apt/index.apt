@@ -14,21 +14,8 @@ Home
   proguard:liberate}} a jar from certain of its dependencies, using the
   {{{http://proguard.sourceforge.net} ProGuard}} utility.
 
-  So that Maven can find it, add the following to your project's <<<pom.xml>>>:
-
-+---
-<project>
-  ...
-  <pluginRepositories>
-    <pluginRepository>
-      <id>lafros.com</id>
-      <url>http://lafros.com/m2arts</url>
-    </pluginRepository>
-  </pluginRepositories>
-+---
-
-  (This normally comes after any <<<repositories>>> element, and before any
-  <<<dependencies>>> one.)
+  To use it, edit the <<<pom.xml>>> of the Maven project whose artifact is the jar to
+  be liberated, as follows.
 
   The project's packaging type, and the scope of the dependencies to be liberated
   from, should be set as in the following example:
@@ -53,23 +40,14 @@ Home
     </dependency>
 +---
 
-  A <<<configuration>>> element must be added beneath the usual <<<plugin>>> one (see
-  Usage § of {{{plugin-info.html#usage} Plug-in Goals}}) in all cases, as shown in
-  the first of the examples which follow.
-
-  Finally, it is likely you will need to have Maven invoke the Java runtime with a
-  larger maximum memory-allocation pool:
-
-+---
-$ export MAVEN_OPTS=-Xmx256m; mvn ...
-+---
-
-* Plug-in configuration examples
-
-  It is always necessary to specify one or more
+  The plug-in should be referenced and configured with the desired
   {{{liberate-mojo.html#entryPoints}entryPoints}}, as in the following example:
 
 +---
+  ...
+  <build>
+    ...
+    <plugins>
       <plugin>
         <groupId>com.lafros.maven.plugins.proguard</groupId>
         <artifactId>maven-proguard-plugin</artifactId>
@@ -82,6 +60,32 @@ $ export MAVEN_OPTS=-Xmx256m; mvn ...
         </configuration>
       </plugin>
 +---
+
+  The plug-in does have other parameters, but these have default values; the
+  section which follows gives examples of when these should be changed.
+
+  Finally, tell Maven where the plug-in is to be found:
+
++---
+  ...
+  <pluginRepositories>
+    <pluginRepository>
+      <id>lafros.com</id>
+      <url>http://lafros.com/m2arts</url>
+    </pluginRepository>
+  </pluginRepositories>
++---
+
+  To create the liberated jar, have Maven invoke the clean phase\[1\] followed by at least the package phase, 
+  and the Java runtime with a larger maximum memory-allocation pool:
+
++---
+$ export MAVEN_OPTS=-Xmx256m; mvn clean package
++---
+
+  \[1\] Note that this is a limitation of this first version of the plug-in (1.0).
+
+* Examples where the default values should be changed
 
   The location of the jar containing the java runtime itself must be specified
   (using the {{{liberate-mojo.html#libraryJars}libraryJars}} element) if,
@@ -99,9 +103,8 @@ $ export MAVEN_OPTS=-Xmx256m; mvn ...
 
   The dependencies being liberated from should be specified using the
   {{{liberate-mojo.html#liberateFromDepsWhoseArtsStartWith}liberateFromDepsWhoseArtsStartWith}}
-  and {{{liberate-mojo.html#filter}filter}} elements, although <<the
-  default values should be sufficient if liberating from the Scala library (and
-  Scala Swing) jars>>:
+  and {{{liberate-mojo.html#filter}filter}} elements, although the default values
+  should be sufficient if liberating from the scala-library and scala-swing jars:
 
 +---
         <configuration>
