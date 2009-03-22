@@ -12,7 +12,7 @@ Home
 
   This plug-in currently has only one goal, namely to {{{liberate-mojo.html}
   proguard:liberate}} a jar from certain of its dependencies, using the
-  {{{http://proguard.sourceforge.net} ProGuard}} utility.
+  {{{http://proguard.sourceforge.net} ProGuard}} utility\[1\].
 
   To use it, edit the <<<pom.xml>>> of the Maven project whose artifact is the jar to
   be liberated, as follows.
@@ -76,14 +76,18 @@ Home
   </pluginRepositories>
 +---
 
-  To create the liberated jar, have Maven invoke the clean phase\[1\] followed by at least the package phase, 
+  To create the liberated jar, have Maven invoke the clean phase\[2\] followed by at least the package phase, 
   and the Java runtime with a larger maximum memory-allocation pool:
 
 +---
 $ export MAVEN_OPTS=-Xmx256m; mvn clean package
 +---
 
-  \[1\] Note that this is a limitation of this first version of the plug-in (1.0).
+  \[1\] There is an
+  {{{http://pyx4me.com/pyx4me-maven-plugins/proguard-maven-plugin/} existing}}
+  Maven ProGuard plug-in, but this does not have an equivalent goal.
+
+  \[2\] This is a limitation of this first version of the plug-in (1.0).
 
 * Examples where the default values should be changed
 
