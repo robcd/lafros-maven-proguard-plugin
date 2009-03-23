@@ -56,7 +56,9 @@ import proguard.ProGuard;
  * @goal liberate
  */
 public class LiberatorMojo extends AbstractMojo {
-  private final String STAGING_JAR_NAME = "onlyThoseRequired.jar";
+  private final String
+    DISCARDED_DIR_NAME = "discarded",
+    STAGING_JAR_NAME = "onlyThoseRequired.jar";
   /**
    * the MavenProject
    * @parameter default-value="${project}"
@@ -139,6 +141,20 @@ public class LiberatorMojo extends AbstractMojo {
     if (!this.enabled) {
       getLog().info("liberate goal disabled");
       return;
+    }
+    //
+    // The current version writes the required classes to outDir, which presents a
+    // problem for subsequent invocations of the test or package phase without the
+    // clean phase; as a safeguard, we assume that clean has not been invoked if
+    // the target directory contains anything left over from a previous invocation.
+    {
+      final File dir, file; {
+        final String path = targetPath();
+        dir = new File(path + DISCARDED_DIR_NAME);
+        file = new File(path + STAGING_JAR_NAME);
+      }
+      if (dir.exists() || file.exists())
+        throw new MojoExecutionException("Sorry - please execute the clean phase first.");
     }
     //
     // separate dependencies into liberate-from libraries, and other dependencies
@@ -265,7 +281,7 @@ public class LiberatorMojo extends AbstractMojo {
     for (File jar: otherDeps) {
       list.add("-injar "+ jar.getPath());
     }
-    list.add("-outjar discarded");
+    list.add("-outjar "+ DISCARDED_DIR_NAME);
     for (File jar: liberateFrLibs) {
       list.add("-injar "+ jar.getPath() + filter);
     }
