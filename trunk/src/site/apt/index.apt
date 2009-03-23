@@ -134,3 +134,19 @@ $ export MAVEN_OPTS=-Xmx256m; mvn clean package
           </alsoSupportDepsWhoseArtsStartWith>
         </configuration>
 +---
+
+* Tricks and tips
+
+  When signing the jar (using the jar plug-in), you will need to override the
+  default value of the jar:sign jarPath parameter (which takes the liberty of using
+  <<<$\{project.packaging\}>>> as the file type):
+
++---
+    ...
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          ...
+          <jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
++---
