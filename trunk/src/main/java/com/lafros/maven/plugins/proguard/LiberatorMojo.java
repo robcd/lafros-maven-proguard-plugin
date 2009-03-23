@@ -1,5 +1,5 @@
 /**
- * Copyright 2008 Latterfrosken Software Development Limited
+ * Copyright 2009 Latterfrosken Software Development Limited
  *
  * This file is part of the lafros-maven-proguard plug-in.
  *
