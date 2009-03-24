@@ -1,5 +1,5 @@
 /**
- * Copyright 2008 Latterfrosken Software Development Limited
+ * Copyright 2009 Latterfrosken Software Development Limited
  *
  * This file is part of the lafros-maven-proguard plug-in.
  *
@@ -58,6 +58,7 @@ import proguard.ProGuard;
 public class LiberatorMojo extends AbstractMojo {
   private final String
     DISCARDED_DIR_NAME = "discarded",
+    LIB_JAR_DIR_NAME = "liberatedJarClasses",
     STAGING_JAR_NAME = "onlyThoseRequired.jar";
   /**
    * the MavenProject
@@ -143,20 +144,6 @@ public class LiberatorMojo extends AbstractMojo {
       return;
     }
     //
-    // The current version writes the required classes to outDir, which presents a
-    // problem for subsequent invocations of the test or package phase without the
-    // clean phase; as a safeguard, we assume that clean has not been invoked if
-    // the target directory contains anything left over from a previous invocation.
-    {
-      final File dir, file; {
-        final String path = targetPath();
-        dir = new File(path + DISCARDED_DIR_NAME);
-        file = new File(path + STAGING_JAR_NAME);
-      }
-      if (dir.exists() || file.exists())
-        throw new MojoExecutionException("Sorry - please execute the clean phase first.");
-    }
-    //
     // separate dependencies into liberate-from libraries, and other dependencies
     final Set<File> liberateFrLibs = new HashSet(), otherDeps = new HashSet(); {
       if (liberateFromDepsWhoseArtsStartWith == null)
@@ -226,7 +213,7 @@ public class LiberatorMojo extends AbstractMojo {
                                        ex);
     }
     //
-    // copy contents of temp jar into outDir
+    // copy contents of staging jar into directory from which liberated jar will be created
     {
       final JarFile onlyThoseRequired; {
         final String name = targetPath() + STAGING_JAR_NAME;
@@ -239,16 +226,26 @@ public class LiberatorMojo extends AbstractMojo {
                                            name);
         }
       }
-      final String prefix = outDir.getPath() + File.separator;
+      final File libJarDir; {
+        final String name = targetPath() + LIB_JAR_DIR_NAME;
+        libJarDir = new File(name);
+      }
+      // create directory
+      if (!libJarDir.exists()) {
+        if (!libJarDir.mkdir())
+          throw new MojoExecutionException("unable to create directory: "+ libJarDir.getPath());
+        if (verbose) getLog().info("created "+ libJarDir.getPath());
+      }
+      //
+      final String prefix = libJarDir.getPath() + File.separator;
       final Enumeration<JarEntry> en = onlyThoseRequired.entries();
       InputStream in;
       FileOutputStream out;
       while (en.hasMoreElements()) {
         final JarEntry jarEntry = en.nextElement();
         final String path = jarEntry.getName();
-        createDirectories(path);
+        createDirectories(libJarDir, path);
         final File file = new File(prefix + path);
-        
         try {
           in = onlyThoseRequired.getInputStream(jarEntry);
           out = new FileOutputStream(file);
@@ -277,11 +274,11 @@ public class LiberatorMojo extends AbstractMojo {
     //
     list.add("-basedirectory "+ project.getBasedir().getPath() + File.separator +"target");
     //
-    list.add("-injar "+ outDir.getPath());
     for (File jar: otherDeps) {
       list.add("-injar "+ jar.getPath());
     }
     list.add("-outjar "+ DISCARDED_DIR_NAME);
+    list.add("-injar "+ outDir.getPath());
     for (File jar: liberateFrLibs) {
       list.add("-injar "+ jar.getPath() + filter);
     }
@@ -318,15 +315,13 @@ public class LiberatorMojo extends AbstractMojo {
     return list.toArray(new String[] {});
   }
 
-  private void createDirectories(String path) throws MojoExecutionException {
+  private void createDirectories(File dir,
+                                 String path) throws MojoExecutionException {
     final String[] tokens = path.split(File.separator);
     // * assume two or more tokens
     // * ignore the last token (which is the file itself)
-    //for (String token: tokens)
     final int n = tokens.length - 1;
-    File dir = outDir;
     for (int i = 0; i < n; i++) {
-      //path = path + File.separator + tokens[i];
       dir = new File(dir, tokens[i]);
       if (!dir.exists()) {
         if (!dir.mkdir()) throw new MojoExecutionException("unable to create directory: "+ dir.getPath());

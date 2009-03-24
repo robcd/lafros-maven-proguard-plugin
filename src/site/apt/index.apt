@@ -61,8 +61,8 @@ Home
       </plugin>
 +---
 
-  The plug-in does have other parameters, but these have default values; the
-  section which follows gives examples of when these should be changed.
+  Setting other proguard:liberate parameters is optional - see the section which
+  follows for examples of when to do this.
 
   Finally, tell Maven where the plug-in is to be found:
 
@@ -90,7 +90,7 @@ $ export MAVEN_OPTS=-Xmx256m; mvn clean package
   \[2\] This is a limitation of this first version of the plug-in (1.0). Please
   also execute the clean phase before any subsequent test one.
 
-* Examples where the default values should be changed
+* Examples of setting proguard:liberate's optional parameters
 
   The location of the jar containing the java runtime itself must be specified
   (using the {{{liberate-mojo.html#libraryJars}libraryJars}} element) if,
@@ -133,4 +133,22 @@ $ export MAVEN_OPTS=-Xmx256m; mvn clean package
             <param>lafros-gui-</param>
           </alsoSupportDepsWhoseArtsStartWith>
         </configuration>
++---
+
+* Tricks and tips
+
+  When signing the jar (using the jar plug-in), you will need to override the
+  default value of the
+  {{{http://maven.apache.org/plugins/maven-jar-plugin/sign-mojo.html} jar:sign}}
+  jarPath parameter (which takes the liberty of using <<<$\{project.packaging\}>>>
+  as the file type):
+
++---
+    ...
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          ...
+          <jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
 +---
