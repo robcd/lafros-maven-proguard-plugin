@@ -67,6 +67,12 @@ public class LiberatorMojo extends AbstractMojo {
    * @readonly */
   private MavenProject project;
   /** 
+   * the build directory
+   * @parameter default-value="${project.build.directory}"
+   * @required
+   * @readonly */
+  private File buildDir;
+  /** 
    * the output directory
    * @parameter default-value="${project.build.outputDirectory}"
    * @required
@@ -216,7 +222,7 @@ public class LiberatorMojo extends AbstractMojo {
     // copy contents of staging jar into directory from which liberated jar will be created
     {
       final JarFile onlyThoseRequired; {
-        final String name = targetPath() + STAGING_JAR_NAME;
+        final String name = buildDir.getPath() + File.separator + STAGING_JAR_NAME;
         if (verbose) getLog().info("copying required classes from "+ name);
         try {
           onlyThoseRequired = new JarFile(name);
@@ -227,7 +233,7 @@ public class LiberatorMojo extends AbstractMojo {
         }
       }
       final File libJarDir; {
-        final String name = targetPath() + LIB_JAR_DIR_NAME;
+        final String name = buildDir.getPath() + File.separator + LIB_JAR_DIR_NAME;
         libJarDir = new File(name);
       }
       // create directory
@@ -261,19 +267,11 @@ public class LiberatorMojo extends AbstractMojo {
       }
     }
   }
-  /**
-   * includes the final separator */
-  private String targetPath() {
-    final String baseDir = project.getBasedir().getPath();
-    return baseDir + File.separator +"target"+ File.separator;
-  }
 
   private String[] createParserArgs(final Set<File> liberateFrLibs,
                                     final Set<File> otherDeps) throws MojoExecutionException {
     final List<String> list = new ArrayList(20);
-    //
-    list.add("-basedirectory "+ project.getBasedir().getPath() + File.separator +"target");
-    //
+    list.add("-basedirectory "+ buildDir.getPath());
     for (File jar: otherDeps) {
       list.add("-injar "+ jar.getPath());
     }
@@ -291,13 +289,11 @@ public class LiberatorMojo extends AbstractMojo {
     for (String libraryJar: libraryJars) {
       list.add("-libraryjars "+ libraryJar);
     }
-    //
     if (entryPoints == null || entryPoints.length == 0)
       throw new MojoExecutionException("Please supply entryPoints.");
     for (String entryPoint: entryPoints) { 
       list.add("-keep public class "+ entryPoint +" {*;}");
     }
-    //
     list.add("-ignorewarnings");
     //
     // let's assume the following are best contemplated after jar:jar has been executed
@@ -311,7 +307,6 @@ public class LiberatorMojo extends AbstractMojo {
       list.add("-dontwarn");
     if (verbose)
       list.add("-verbose");
-    //
     return list.toArray(new String[] {});
   }
 
