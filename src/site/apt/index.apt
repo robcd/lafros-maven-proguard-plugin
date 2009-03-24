@@ -64,6 +64,22 @@ Home
   Setting other proguard:liberate parameters is optional - see the section which
   follows for examples of when to do this.
 
+  <<As of version 1.1>>, it is necessary to override the default value of the
+  {{{http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html}jar:jar}}
+  <<<classesDirectory>>> parameter, so as to create the jar using classes obtained
+  from proguard:liberate's
+  {{{liberate-mojo.html#liberatedClassesDirectory} liberatedClassesDirectory}}:
+
++---
+    ...
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          ...
+          <classesDirectory>${project.build.directory}/liberated-classes</classesDirectory>
++---
+
   Finally, tell Maven where the plug-in is to be found:
 
 +---
@@ -76,19 +92,19 @@ Home
   </pluginRepositories>
 +---
 
-  To create the liberated jar, have Maven execute the clean phase\[2\] followed by at least the package phase, 
-  and invoke the Java runtime with a larger maximum memory-allocation pool:
+  To create the liberated jar, have Maven execute at least the package phase, 
+  invoking the Java runtime with a larger maximum memory-allocation pool:
 
 +---
-$ export MAVEN_OPTS=-Xmx256m; mvn clean package
+$ export MAVEN_OPTS=-Xmx256m; mvn package
 +---
+
+  Note that <<prior to version 1.1>>, subsequent execution of the test or package phase must be
+  preceded by execution of the clean phase.
 
   \[1\] There is an
   {{{http://pyx4me.com/pyx4me-maven-plugins/proguard-maven-plugin/} existing}}
   Maven ProGuard plug-in, but this does not have an equivalent goal.
-
-  \[2\] This is a limitation of this first version of the plug-in (1.0). Please
-  also execute the clean phase before any subsequent test one.
 
 * Examples of setting proguard:liberate's optional parameters
 

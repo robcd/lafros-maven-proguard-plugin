@@ -43,23 +43,27 @@ import proguard.KeepSpecification;
 import proguard.ParseException;
 import proguard.ProGuard;
 /**
- * for projects of packaging type, <b><tt>liberated-jar</tt></b>, this goal
- * 'liberates' the jar artifact, in advance of its creation, from specified library
- * dependencies which are typically large and only sparsely populated with the
- * classes which are actually required. This is achieved by copying those classes
- * to the output directory, where they will be added to the artifact by the
- * standard jar plug-in in the usual way. Other dependencies which also depend on
- * the above ones may also be specified, so that the classes which they themselves
- * require will also be copied to the output directory.
+ * <p>for projects of packaging type, <b><tt>liberated-jar</tt></b>, this goal
+ * 'liberates' the jar artifact, in advance of its creation (by the jar plug-in),
+ * from specified library dependencies which are typically large and only sparsely
+ * populated with the classes which are actually required. This is achieved by
+ * copying those classes, together with the contents of the project's output
+ * directory, to the <tt>liberatedClassesDirectory</tt>, and specifying this as the
+ * <tt>jar:jar</tt> goal's <tt>classesDirectory</tt>. Other dependencies which also
+ * depend on the above ones may also be specified, so that the classes which they
+ * themselves require will also be included.</p>
+ *
+ * <p>1.0: required classes written to project's output directory itself;
+ * consequently, execution of the clean phase was required before subsequent
+ * execution of the test or package ones.</p>
  *
  * @phase package
  * @goal liberate
  */
 public class LiberatorMojo extends AbstractMojo {
   private final String
-    DISCARDED_DIR_NAME = "discarded",
-    LIB_JAR_DIR_NAME = "liberatedJarClasses",
-    STAGING_JAR_NAME = "onlyThoseRequired.jar";
+    DISCARDED_DIR_NAME = "liberated-discarded",
+    STAGING_JAR_NAME = "liberated-staging.jar";
   /**
    * the MavenProject
    * @parameter default-value="${project}"
@@ -73,13 +77,20 @@ public class LiberatorMojo extends AbstractMojo {
    * @readonly */
   private File buildDir;
   /** 
-   * the output directory
+   * the usual output directory
    * @parameter default-value="${project.build.outputDirectory}"
    * @required
    * @readonly */
   private File outDir;
+  /**
+   * where this goal's output (see above) will be written. <b>Note that the <a
+   * href="http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html">jar:jar</a>
+   * goal's <tt>classesDirectory</tt> parameter must be set to the same value.</b>
+   * @parameter default-value="${project.build.directory}/liberated-classes"
+   * @since 1.1 */
+  private File liberatedClassesDirectory;
   /** 
-   * The set of dependencies required by the project
+   * the set of dependencies required by the project
    * @parameter default-value="${project.artifacts}"
    * @required
    * @readonly */
@@ -232,25 +243,21 @@ public class LiberatorMojo extends AbstractMojo {
                                            name);
         }
       }
-      final File libJarDir; {
-        final String name = buildDir.getPath() + File.separator + LIB_JAR_DIR_NAME;
-        libJarDir = new File(name);
-      }
-      // create directory
-      if (!libJarDir.exists()) {
-        if (!libJarDir.mkdir())
-          throw new MojoExecutionException("unable to create directory: "+ libJarDir.getPath());
-        if (verbose) getLog().info("created "+ libJarDir.getPath());
+      //
+      if (!liberatedClassesDirectory.exists()) {
+        if (!liberatedClassesDirectory.mkdir())
+          throw new MojoExecutionException("unable to create directory: "+ liberatedClassesDirectory.getPath());
+        if (verbose) getLog().info("created "+ liberatedClassesDirectory.getPath());
       }
       //
-      final String prefix = libJarDir.getPath() + File.separator;
+      final String prefix = liberatedClassesDirectory.getPath() + File.separator;
       final Enumeration<JarEntry> en = onlyThoseRequired.entries();
       InputStream in;
       FileOutputStream out;
       while (en.hasMoreElements()) {
         final JarEntry jarEntry = en.nextElement();
         final String path = jarEntry.getName();
-        createDirectories(libJarDir, path);
+        createDirectories(liberatedClassesDirectory, path);
         final File file = new File(prefix + path);
         try {
           in = onlyThoseRequired.getInputStream(jarEntry);
