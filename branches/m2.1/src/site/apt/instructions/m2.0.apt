@@ -1,0 +1,164 @@
+  ---
+  Instructions - Maven 2.0
+  ---
+  Rob Dickens
+  Copyright Latterfrosken Software Development Limited
+  ---
+  2009-03-25
+  ---
+
+Instructions for Maven 2.0 users
+
+* Basic configuration
+
+  The project's packaging type, and the scope of the dependencies to be liberated
+  from, should be set as in the following example:
+
++---
+<project>
+  ...
+  <packaging>liberated-jar</packaging>
+  ...
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-swing</artifactId>
+      <version>${scala.version}</version>
+      <scope>provided</scope>
+    </dependency>
++---
+
+  The plug-in should be referenced and configured with <<<extensions>>> set to
+  true, and the desired {{{liberate-mojo.html#entryPoints}entryPoints}}, as in the
+  following example; note that the latest version (currently 1.1) will be used by
+  default:
+
++---
+  ...
+  <build>
+    ...
+    <plugins>
+      <plugin>
+        <groupId>com.lafros.maven.plugins.proguard</groupId>
+        <artifactId>maven-proguard-plugin</artifactId>
+        <!--version>1.1</version>-->
+        <extensions>true</extensions>
+        <configuration>
+          <entryPoints>
+            <param>com.lafros.gui.demo.alerts.app</param>
+            <param>com.lafros.gui.app.Applet</param>
+          </entryPoints>
+          ...
+        </configuration>
+      </plugin>
++---
+
+  Setting other proguard:liberate parameters is optional - see the section which
+  follows for examples of when to do this.
+
+  As of version 1.1, it is necessary to override the default value of the
+  {{{http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html}jar:jar}}
+  <<<classesDirectory>>> parameter, so as to create the jar using classes obtained
+  from proguard:liberate's
+  {{{liberate-mojo.html#liberatedClassesDirectory} liberatedClassesDirectory}}:
+
++---
+    ...
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          ...
+          <classesDirectory>${project.build.directory}/liberated-classes</classesDirectory>
++---
+
+  Finally, tell Maven where the plug-in is to be found:
+
++---
+  ...
+  <pluginRepositories>
+    <pluginRepository>
+      <id>lafros.com</id>
+      <url>http://lafros.com/m2arts</url>
+    </pluginRepository>
+  </pluginRepositories>
++---
+
+  To create the liberated jar, have Maven execute at least the package phase, 
+  invoking the Java runtime with a larger maximum memory-allocation pool:
+
++---
+$ export MAVEN_OPTS=-Xmx256m; mvn package
++---
+
+  If using version 1.0, subsequent execution of the test or package phase must be
+  preceded by execution of the clean phase.
+
+* Examples of setting proguard:liberate's optional parameters
+
+  The location of the jar containing the java runtime itself must be specified
+  (using the {{{liberate-mojo.html#libraryJars}libraryJars}} element) if,
+  as on Mac OS X, it is not in the standard location
+  (<<<<java.home>/lib/rt.jar>>>):
+
++---
+        <configuration>
+          ...
+          <libraryJars>
+            <param>&lt;java.home&gt;/../Classes/classes.jar</param>
+          </libraryJars>
+        </configuration>
++---
+
+  The dependencies being liberated from should be specified using the
+  {{{liberate-mojo.html#liberateFromDepsWhoseArtsStartWith}liberateFromDepsWhoseArtsStartWith}}
+  and {{{liberate-mojo.html#filter}filter}} elements, although the default values
+  should be sufficient if liberating from the scala-library and scala-swing jars:
+
++---
+        <configuration>
+          ...
+          <liberateFromDepsWhoseArtsStartWith>
+            <param>some-large-lib-</param>
+          </liberateFromDepsWhoseArtsStartWith>
+          <filter>(!notInterestedIn/**, interestedIn/**)</filter>
+        </configuration>
++---
+
+  Any other dependencies which depend on those being liberated from should also be
+  specified (using the
+  {{{liberate-mojo.html#alsoSupportDepsWhoseArtsStartWith}alsoSupportDepsWhoseArtsStartWith}}
+  element):
+
++---
+        <configuration>
+          ...
+          <alsoSupportDepsWhoseArtsStartWith>
+            <param>lafros-gui-</param>
+          </alsoSupportDepsWhoseArtsStartWith>
+        </configuration>
++---
+
+* Tricks and tips
+
+  When signing the jar (using the jar plug-in), you will need to override the
+  default value of the
+  {{{http://maven.apache.org/plugins/maven-jar-plugin/sign-mojo.html} jar:sign}}
+  jarPath parameter (which takes the liberty of using <<<$\{project.packaging\}>>>
+  as the file type):
+
++---
+    ...
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          ...
+          <jarPath>${project.build.directory}/${project.build.finalName}.jar</jarPath>
++---
