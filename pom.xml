@@ -4,7 +4,7 @@
   <groupId>com.lafros.maven.plugins.proguard</groupId>
   <artifactId>maven-proguard-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.1</version>
+  <version>1.1-m2.1</version>
   <name>Latterfrosken Maven ProGuard Plug-in</name>
   <description>plug-in having goal that uses ProGuard to 'liberate' jars from specified dependencies</description>
   <url>http://code.google.com/p/lafros-maven-proguard-plugin</url>
@@ -48,12 +48,12 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>2.0.10</version>
+      <version>2.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-project</artifactId>
-      <version>2.0.10</version>
+      <version>2.1.0</version>
     </dependency>
     <dependency>
       <groupId>net.sf.proguard</groupId>
