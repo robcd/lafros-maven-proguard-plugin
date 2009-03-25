@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+  <!--skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-classic-skin</artifactId>
+    <artifactId>maven-stylus-skin</artifactId>
+    <version>1.0</version>
+  </skin-->
+  <body> 
+    <menu name="Project Documentation"> 
+      <item name="Home" href="index.html"/> 
+      <item name="Instructions - Maven 2.0" href="instructions/m2.0.html"/> 
+      <item name="Instructions - Maven 2.1" href="instructions/m2.1.html"/> 
+      <item name="Plug-in Goals" href="plugin-info.html"/> 
+      <item name="Issue Tracking" href="issue-tracking.html"/> 
+      <item name="Source Repository" href="source-repository.html"/> 
+      <item name="Dependencies" href="dependencies.html"/> 
+      <item name="People" href="team-list.html"/> 
+      <item name="Licence: GPLv3" href="http://www.gnu.org/licenses/gpl-3.0.html"/> 
+      <item name="Lafros.com" href="http://lafros.com/home"/> 
+    </menu> 
+  </body> 
+</project> 

@@ -1,0 +1,22 @@
+  ---
+  Home
+  ---
+  Rob Dickens
+  Copyright Latterfrosken Software Development Limited
+  ---
+  2009-03-25
+  ---
+
+Home
+
+  This plug-in currently has only one goal, namely to {{{liberate-mojo.html}
+  proguard:liberate}} a jar from certain of its dependencies, using the
+  {{{http://proguard.sourceforge.net} ProGuard}} utility\[1\].
+
+  To use it, edit the <<<pom.xml>>> of the Maven project whose artifact is the jar to
+  be liberated, according to the version of Maven you're using -
+  {{{instructions/m2.0.html} 2.0}} or {{{instructions/m2.1.html} 2.1}}.
+
+  \[1\] There is an
+  {{{http://pyx4me.com/pyx4me-maven-plugins/proguard-maven-plugin/} existing}}
+  Maven ProGuard plug-in, but this does not have an equivalent goal.
