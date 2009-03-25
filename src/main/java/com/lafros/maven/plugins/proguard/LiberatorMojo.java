@@ -43,21 +43,19 @@ import proguard.KeepSpecification;
 import proguard.ParseException;
 import proguard.ProGuard;
 /**
- * <p>for projects of packaging type, <b><tt>liberated-jar</tt></b>, this goal
  * 'liberates' the jar artifact, in advance of its creation (by the jar plug-in),
  * from specified library dependencies which are typically large and only sparsely
  * populated with the classes which are actually required. This is achieved by
  * copying those classes, together with the contents of the project's output
- * directory, to the <tt>liberatedClassesDirectory</tt>, and specifying this as the
+ * directory, to the <tt>liberatedClassesDirectory</tt>[1], and specifying this as the
  * <tt>jar:jar</tt> goal's <tt>classesDirectory</tt>. Other dependencies which also
  * depend on the above ones may also be specified, so that the classes which they
- * themselves require will also be included.</p>
+ * themselves require will also be included.<br>
+ * <br>
+ * [1] Prior to version 1.1, the classes were written to the project's output
+ * directory itself.
  *
- * <p>1.0: required classes written to project's output directory itself;
- * consequently, execution of the clean phase was required before subsequent
- * execution of the test or package ones.</p>
- *
- * @phase package
+ * @phase prepare-package
  * @goal liberate
  */
 public class LiberatorMojo extends AbstractMojo {
@@ -153,7 +151,7 @@ public class LiberatorMojo extends AbstractMojo {
   private boolean enabled;
 
   public void execute() throws MojoExecutionException, MojoFailureException {
-    if (!this.project.getPackaging().equals("liberated-jar"))
+    if (!this.project.getPackaging().equals("jar"))
       return;
     //
     if (!this.enabled) {
