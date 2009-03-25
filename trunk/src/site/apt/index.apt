@@ -40,8 +40,9 @@ Home
     </dependency>
 +---
 
-  The plug-in should be referenced and configured with the desired
-  {{{liberate-mojo.html#entryPoints}entryPoints}}, as in the following example:
+  The plug-in should be referenced and configured <<with extensions set to true>>
+  and with the desired {{{liberate-mojo.html#entryPoints}entryPoints}}, as in the
+  following example:
 
 +---
   ...
@@ -51,6 +52,7 @@ Home
       <plugin>
         <groupId>com.lafros.maven.plugins.proguard</groupId>
         <artifactId>maven-proguard-plugin</artifactId>
+        <extensions>true</extensions>
         <configuration>
           <entryPoints>
             <param>com.lafros.gui.demo.alerts.app</param>
