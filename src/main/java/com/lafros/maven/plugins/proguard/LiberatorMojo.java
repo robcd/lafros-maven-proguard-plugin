@@ -104,13 +104,13 @@ public class LiberatorMojo extends AbstractMojo {
   private String[] libraryJars;
   /**
    * required classes (see above) from dependency artifacts starting with any of
-   * these Strings will be copied to the output directory. If not set,
+   * these Strings will be copied to the <tt>liberatedClassesDirectory</tt>. If not set,
    * <tt>"scala-library-"</tt> and <tt>"scala-swing-"</tt> will be assumed.
    * @parameter */
   private String[] liberateFromDepsWhoseArtsStartWith;
   /**
    * other dependency artifacts which depend on those to be liberated from - any
-   * classes they require will also be copied to the output directory.
+   * classes they require will also be copied to the <tt>liberatedClassesDirectory</tt>.
    * @parameter */
   private String[] alsoSupportDepsWhoseArtsStartWith;
   /**
