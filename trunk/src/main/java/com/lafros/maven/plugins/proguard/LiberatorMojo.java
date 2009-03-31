@@ -279,10 +279,12 @@ public class LiberatorMojo extends AbstractMojo {
                                     final Set<File> otherDeps) throws MojoExecutionException {
     final List<String> list = new ArrayList(20);
     list.add("-basedirectory "+ buildDir.getPath());
-    for (File jar: otherDeps) {
-      list.add("-injar "+ jar.getPath());
+    if (otherDeps.size() > 0) {
+      for (File jar: otherDeps) {
+        list.add("-injar "+ jar.getPath());
+      }
+      list.add("-outjar "+ DISCARDED_DIR_NAME);
     }
-    list.add("-outjar "+ DISCARDED_DIR_NAME);
     list.add("-injar "+ outDir.getPath());
     for (File jar: liberateFrLibs) {
       list.add("-injar "+ jar.getPath() + filter);
