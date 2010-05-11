@@ -169,6 +169,7 @@ public class LiberatorMojo extends AbstractMojo {
           "scala-swing-",
         };
       for (Artifact art: dependencies) { 
+        if (art.getScope().equals(Artifact.SCOPE_TEST)) continue;
         final File jar = art.getFile();
         final String name = jar.getName();
         boolean accountedFor = false;
@@ -179,12 +180,14 @@ public class LiberatorMojo extends AbstractMojo {
             break;
           }
         }
-        if (!accountedFor) {
-          // must start with one of the Strings in alsoSupportDepsWhoseArtsStartWith
+        if (!accountedFor &&
+            alsoSupportDepsWhoseArtsStartWith != null)
           for (String prefix: alsoSupportDepsWhoseArtsStartWith) {
-            if (name.startsWith(prefix)) otherDeps.add(jar);
+            if (name.startsWith(prefix)) {
+              otherDeps.add(jar);
+              break;
+            }
           }
-        }
       }
     }
     //
