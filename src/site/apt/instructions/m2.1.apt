@@ -9,6 +9,8 @@
 
 Instructions for Maven 2.1 users
 
+  Last {{{Change_log}change-log entry}}: 2010-May-11
+
 * Basic configuration
 
   The project's packaging type, and the scope of the dependencies to be liberated
@@ -36,7 +38,8 @@ Instructions for Maven 2.1 users
 
   The plug-in should be referenced and configured with the desired
   {{{liberate-mojo.html#entryPoints}entryPoints}}, as in the following
-  example; note that the version must be explicitly set as shown:
+  example; note that the latest version (currently 1.2) will be used by
+  default:
 
 +---
   ...
@@ -44,9 +47,9 @@ Instructions for Maven 2.1 users
     ...
     <plugins>
       <plugin>
-        <groupId>com.lafros.maven.plugins.proguard</groupId>
+        <groupId>com.lafros.maven.plugins</groupId>
         <artifactId>maven-proguard-plugin</artifactId>
-        <version>1.1-m2.1</version>
+        <!--version>1.2</version>-->
         <executions>
           <execution>
             <goals>
@@ -146,3 +149,18 @@ $ export MAVEN_OPTS=-Xmx256m; mvn package
           </alsoSupportDepsWhoseArtsStartWith>
         </configuration>
 +---
+
+* {Change log}
+
+  * 2010-May-11
+
+      * Current version changed from 1.1-m2.1 to 1.2: addresses a bug which
+        sometimes resulted in a NullPointerException being thrown if no
+        alsoSupportDepsWhoseArtsStartWith element was supplied.
+
+      * groupId changed from com.lafros.maven.plugins.proguard to just
+        com.lafros.maven.plugins.
+
+  
+  
+
